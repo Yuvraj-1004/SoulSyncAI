@@ -195,6 +195,35 @@ body::before {
         font-size: 18px;
         padding: 12px;
     }
+<<<<<<< HEAD
+}
+/* Chat Messages */
+.chat-message {
+    background: var(--user-bg);
+    color: var(--user-text);
+    padding: 14px; /* Increased padding */
+    border-radius: 18px;
+    margin: 12px 0; /* Increased margin for spacing */
+    max-width: 75%;
+    align-self: flex-end;
+    font-size: 16px;
+    line-height: 1.4; /* Increased line spacing */
+    transition: var(--transition);
+}
+
+.agent-message {
+    background: var(--agent-bg);
+    color: #333;
+    padding: 14px; /* More padding for readability */
+    border-radius: 18px;
+    margin: 12px 0; /* More space between messages */
+    max-width: 75%;
+    align-self: flex-start;
+    font-size: 16px;
+    line-height: 1.8; /* Increased spacing */
+    transition: var(--transition);
+=======
+>>>>>>> dd530ac82e0ba463522ea1e0ea1606dded7fe7eb
 }
 /* Chat Messages */
 .chat-message {
