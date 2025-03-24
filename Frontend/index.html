@@ -18,27 +18,48 @@
 
     <script>
         const userId = localStorage.getItem("user_id");
-
+    
         if (!userId) {
             alert("Please log in first!");
             window.location.href = "login.html";
+        } else {
+            sendWelcomeMessage();
         }
-
+    
+        async function sendWelcomeMessage() {
+            try {
+                const response = await fetch("http://127.0.0.1:5000/welcome", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_id: userId })
+                });
+    
+                const data = await response.json();
+                if (response.ok) {
+                    addMessage(`<span class="agent-name">SoulSync</span>: ${data.response}`, "agent");
+                } else {
+                    console.error("Server error:", data.error);
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+            }
+        }
+    
         async function sendMessage() {
             const inputField = document.getElementById("userInput");
             const message = inputField.value.trim();
             if (!message) return;
-
+    
             addMessage(message, "user");
             inputField.value = "";
-
+    
             try {
                 const response = await fetch("http://127.0.0.1:5000/chat", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ user_id: userId, message })
                 });
-
+    
                 const data = await response.json();
                 if (response.ok) {
                     const agentName = data.agent_used ? formatAgentName(data.agent_used) : "Unknown Agent";
@@ -52,13 +73,12 @@
                 addMessage(`Network error: ${error.message}. Please check your connection and try again.`, "agent");
             }
         }
-
         function formatAgentName(agent) {
             return agent
                 .replace(/_/g, " ") // Replace underscores with spaces
                 .replace(/\b\w/g, letter => letter.toUpperCase()); // Capitalize first letters
         }
-
+    
         function addMessage(message, sender) {
             const chatBox = document.getElementById("chatBox");
             const messageElement = document.createElement("div");
@@ -67,12 +87,13 @@
             chatBox.appendChild(messageElement);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
-
+    
         function handleKeyPress(event) {
             if (event.key === "Enter") {
                 sendMessage();
             }
         }
     </script>
+    
 </body>
 </html>
